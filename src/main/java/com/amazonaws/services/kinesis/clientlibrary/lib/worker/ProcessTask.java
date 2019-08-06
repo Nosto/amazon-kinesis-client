@@ -48,6 +48,7 @@ class ProcessTask implements ITask {
     public static final String EXPIRED_ITERATOR_METRIC = "ExpiredIterator";
     public static final String DATA_BYTES_PROCESSED_METRIC = "DataBytesProcessed";
     public static final String RECORDS_PROCESSED_METRIC = "RecordsProcessed";
+    public static final String DEAGGREGATED_RECORDS_PROCESSED_METRIC = "DeaggregatedRecordsProcessed";
     public static final String MILLIS_BEHIND_LATEST_METRIC = "MillisBehindLatest";
     public static final String RECORD_PROCESSOR_PROCESS_RECORDS_METRIC = "RecordProcessor.processRecords";
     private static final int MAX_CONSECUTIVE_THROTTLES = 5;
@@ -148,6 +149,7 @@ class ProcessTask implements ITask {
         scope.addDimension(MetricsHelper.SHARD_ID_DIMENSION_NAME, shardInfo.getShardId());
         scope.addDimension(MetricsHelper.STREAM_NAME_DIMENSION_NAME, dataFetcher.getStreamName());
         scope.addData(RECORDS_PROCESSED_METRIC, 0, StandardUnit.Count, MetricsLevel.SUMMARY);
+        scope.addData(DEAGGREGATED_RECORDS_PROCESSED_METRIC, 0, StandardUnit.Count, MetricsLevel.SUMMARY);
         scope.addData(DATA_BYTES_PROCESSED_METRIC, 0, StandardUnit.Bytes, MetricsLevel.SUMMARY);
         Exception exception = null;
 
@@ -166,7 +168,7 @@ class ProcessTask implements ITask {
             } else {
                 handleNoRecords(startTimeMillis);
             }
-            records = deaggregateRecords(records);
+            records = deaggregateRecords(records, scope);
 
             recordProcessorCheckpointer.setLargestPermittedCheckpointValue(
                     filterAndGetMaxExtendedSequenceNumber(scope, records,
@@ -249,17 +251,20 @@ class ProcessTask implements ITask {
      * @return returns either the deaggregated records, or the original records
      */
     @SuppressWarnings("unchecked")
-    private List<Record> deaggregateRecords(List<Record> records) {
+    private List<Record> deaggregateRecords(List<Record> records, IMetricsScope scope) {
         // We deaggregate if and only if we got actual Kinesis records, i.e.
         // not instances of some subclass thereof.
         if (!records.isEmpty() && records.get(0).getClass().equals(Record.class)) {
+            final List<Record> deaggregated;
             if (this.shard != null) {
-                return (List<Record>) (List<?>) UserRecord.deaggregate(records,
+                deaggregated = (List<Record>) (List<?>) UserRecord.deaggregate(records,
                         new BigInteger(this.shard.getHashKeyRange().getStartingHashKey()),
                         new BigInteger(this.shard.getHashKeyRange().getEndingHashKey()));
             } else {
-                return (List<Record>) (List<?>) UserRecord.deaggregate(records);
+                deaggregated = (List<Record>) (List<?>) UserRecord.deaggregate(records);
             }
+            scope.addData(DEAGGREGATED_RECORDS_PROCESSED_METRIC, deaggregated.size(), StandardUnit.Count, MetricsLevel.SUMMARY);
+            return deaggregated;
         }
         return records;
     }
