@@ -6,7 +6,7 @@
   <artifactId>amazon-kinesis-client</artifactId>
   <packaging>jar</packaging>
   <name>Amazon Kinesis Client Library for Java</name>
-  <version>1.7.3</version>
+  <version>1.7.3-nosto-1.0</version>
   <description>The Amazon Kinesis Client Library for Java enables Java developers to easily consume and process data
     from Amazon Kinesis.
   </description>
@@ -268,5 +268,12 @@
       </build>
     </profile>
   </profiles>
+
+  <distributionManagement>
+    <repository>
+      <id>nexus</id>
+      <url>https://repo.nos.to/content/repositories/NostoDependencies/</url>
+    </repository>
+  </distributionManagement>
 
 </project>
