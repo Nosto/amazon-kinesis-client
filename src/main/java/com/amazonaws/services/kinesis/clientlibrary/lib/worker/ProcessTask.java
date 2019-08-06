@@ -47,6 +47,7 @@ class ProcessTask implements ITask {
     public static final String EXPIRED_ITERATOR_METRIC = "ExpiredIterator";
     public static final String DATA_BYTES_PROCESSED_METRIC = "DataBytesProcessed";
     public static final String RECORDS_PROCESSED_METRIC = "RecordsProcessed";
+    public static final String DEAGGREGATED_RECORDS_PROCESSED_METRIC = "DeaggregatedRecordsProcessed";
     public static final String MILLIS_BEHIND_LATEST_METRIC = "MillisBehindLatest";
     public static final String RECORD_PROCESSOR_PROCESS_RECORDS_METRIC = "RecordProcessor.processRecords";
 
@@ -114,6 +115,7 @@ class ProcessTask implements ITask {
         scope.addDimension(MetricsHelper.SHARD_ID_DIMENSION_NAME, shardInfo.getShardId());
         scope.addDimension(MetricsHelper.STREAM_NAME_DIMENSION_NAME, dataFetcher.getStreamName());
         scope.addData(RECORDS_PROCESSED_METRIC, 0, StandardUnit.Count, MetricsLevel.SUMMARY);
+        scope.addData(DEAGGREGATED_RECORDS_PROCESSED_METRIC, 0, StandardUnit.Count, MetricsLevel.SUMMARY);
         scope.addData(DATA_BYTES_PROCESSED_METRIC, 0, StandardUnit.Bytes, MetricsLevel.SUMMARY);
 
         Exception exception = null;
@@ -157,6 +159,7 @@ class ProcessTask implements ITask {
                 } else {
                     records = (List<Record>) (List<?>) UserRecord.deaggregate(records);
                 }
+                scope.addData(DEAGGREGATED_RECORDS_PROCESSED_METRIC, records.size(), StandardUnit.Count, MetricsLevel.SUMMARY);
             }
             
             recordProcessorCheckpointer.setLargestPermittedCheckpointValue(
