@@ -45,11 +45,11 @@ class ProcessTask implements ITask {
 
     private static final Log LOG = LogFactory.getLog(ProcessTask.class);
 
-    private static final String EXPIRED_ITERATOR_METRIC = "ExpiredIterator";
-    private static final String DATA_BYTES_PROCESSED_METRIC = "DataBytesProcessed";
-    private static final String RECORDS_PROCESSED_METRIC = "RecordsProcessed";
-    private static final String MILLIS_BEHIND_LATEST_METRIC = "MillisBehindLatest";
-    private static final String RECORD_PROCESSOR_PROCESS_RECORDS_METRIC = "RecordProcessor.processRecords";
+    public static final String EXPIRED_ITERATOR_METRIC = "ExpiredIterator";
+    public static final String DATA_BYTES_PROCESSED_METRIC = "DataBytesProcessed";
+    public static final String RECORDS_PROCESSED_METRIC = "RecordsProcessed";
+    public static final String MILLIS_BEHIND_LATEST_METRIC = "MillisBehindLatest";
+    public static final String RECORD_PROCESSOR_PROCESS_RECORDS_METRIC = "RecordProcessor.processRecords";
     private static final int MAX_CONSECUTIVE_THROTTLES = 5;
 
     private final ShardInfo shardInfo;
