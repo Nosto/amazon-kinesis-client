@@ -605,6 +605,11 @@ public class KinesisProxy implements IKinesisProxyExtended {
         return response;
     }
 
+    @Override
+    public String getStreamName() {
+        return streamName;
+    }
+
     @Data
     static class ShardIterationState {
 
@@ -626,5 +631,4 @@ public class KinesisProxy implements IKinesisProxyExtended {
             }
         }
     }
-
 }

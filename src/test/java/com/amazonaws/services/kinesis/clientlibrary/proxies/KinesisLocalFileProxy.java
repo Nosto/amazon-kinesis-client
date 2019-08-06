@@ -425,6 +425,11 @@ public class KinesisLocalFileProxy implements IKinesisProxy {
         return shards;
     }
 
+    @Override
+    public String getStreamName() {
+        return "LocalMock";
+    }
+
     /**
      * {@inheritDoc}
      */
