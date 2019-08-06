@@ -132,4 +132,6 @@ public interface IKinesisProxy {
             String explicitHashKey,
             String partitionKey,
             ByteBuffer data) throws ResourceNotFoundException, InvalidArgumentException;
+
+    String getStreamName();
 }

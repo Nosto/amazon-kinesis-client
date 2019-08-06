@@ -423,6 +423,11 @@ public class KinesisLocalFileProxy implements IKinesisProxy {
         return shards;
     }
 
+    @Override
+    public String getStreamName() {
+        return "LocalMock";
+    }
+
     /**
      * Used for serializing/deserializing the shard list to the file.
      */

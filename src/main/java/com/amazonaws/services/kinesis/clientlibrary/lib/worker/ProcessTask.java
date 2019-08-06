@@ -112,6 +112,7 @@ class ProcessTask implements ITask {
         long startTimeMillis = System.currentTimeMillis();
         IMetricsScope scope = MetricsHelper.getMetricsScope();
         scope.addDimension(MetricsHelper.SHARD_ID_DIMENSION_NAME, shardInfo.getShardId());
+        scope.addDimension(MetricsHelper.STREAM_NAME_DIMENSION_NAME, dataFetcher.getStreamName());
         scope.addData(RECORDS_PROCESSED_METRIC, 0, StandardUnit.Count, MetricsLevel.SUMMARY);
         scope.addData(DATA_BYTES_PROCESSED_METRIC, 0, StandardUnit.Bytes, MetricsLevel.SUMMARY);
 

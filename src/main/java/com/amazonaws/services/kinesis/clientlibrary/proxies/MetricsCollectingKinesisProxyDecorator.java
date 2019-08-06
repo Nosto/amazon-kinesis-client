@@ -197,4 +197,9 @@ public class MetricsCollectingKinesisProxyDecorator implements IKinesisProxy {
             MetricsHelper.addSuccessAndLatency(putRecordMetric, startTime, success, MetricsLevel.DETAILED);
         }
     }
+
+    @Override
+    public String getStreamName() {
+        return other.getStreamName();
+    }
 }

@@ -39,6 +39,7 @@ public class MetricsHelper {
      */
     public static final String OPERATION_DIMENSION_NAME = "Operation";
     public static final String SHARD_ID_DIMENSION_NAME = "ShardId";
+    public static final String STREAM_NAME_DIMENSION_NAME = "StreamName";
     public static final String TIME = "Time";
     public static final String SUCCESS = "Success";
     private static final String SEP = ".";

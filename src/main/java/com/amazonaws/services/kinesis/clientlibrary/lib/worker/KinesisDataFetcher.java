@@ -192,4 +192,8 @@ class KinesisDataFetcher {
         return nextIterator;
     }
 
+    public String getStreamName() {
+        return kinesisProxy.getStreamName();
+    }
+
 }
