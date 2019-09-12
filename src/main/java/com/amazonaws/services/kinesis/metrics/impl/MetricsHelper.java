@@ -99,7 +99,7 @@ public class MetricsHelper {
     public static IMetricsScope getMetricsScope() {
         IMetricsScope result = currentScope.get();
         if (result == null) {
-            LOG.warn(String.format("No metrics scope set in thread %s, getMetricsScope returning NullMetricsScope.",
+            LOG.info(String.format("No metrics scope set in thread %s, getMetricsScope returning NullMetricsScope.",
                     Thread.currentThread().getName()));
 
             return NULL_METRICS_SCOPE;
